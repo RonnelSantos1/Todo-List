@@ -1,0 +1,98 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>To-Do List App</title>
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+  <header>
+    <div class="logo">
+      <img src="https://cdn-icons-png.flaticon.com/512/1157/1157031.png" alt="logo" />
+      <h1></h1>
+    </div>
+
+    <input type="text" id="search" placeholder="Search list..." />
+
+    <div class="menu-btn" onclick="toggleMenu()">☰</div>
+
+    <div class="sidebar" id="sidebar">
+      <a href="#" onclick="openAccountPanel(event)">Account</a>
+      <a href="#" onclick="toggleSettings(event)">Settings ▼</a>
+      <div class="settings-panel" id="settingsPanel">
+        <a href="#" onclick="showRecentlyDeleted(event)">Recently Deleted</a>
+        <a href="#" onclick="showListOrder(event)">List Order</a>
+      </div>
+    </div>
+    <div class="overlay" id="overlay" onclick="closeMenu()"></div>
+  </header>
+
+  <main>
+    <section class="my-lists">
+      <h2 id="currentAccountTitle">My Folders (Guest)</h2>
+      <button id="openFolderModal">➕ Add Folder</button>
+      <ul id="folderList"></ul>
+    </section>
+  </main>
+
+  <!-- Folder Creation Modal -->
+  <div class="modal" id="folderModal">
+    <div class="modal-content">
+      <h3>Create Folder</h3>
+      <label>Folder Name:</label>
+      <input type="text" id="folderNameInput" placeholder="Enter folder name" />
+
+      <div class="todo-inputs">
+        <label>Add To-Do:</label>
+        <input type="text" id="todoInput" placeholder="Enter task" />
+        <button id="addTodoBtn">Add List</button>
+      </div>
+
+      <ul id="tempTodoList"></ul>
+
+      <div class="modal-buttons">
+        <button id="createFolderBtn">Create Folder</button>
+        <button id="cancelFolderBtn">Cancel</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Account Modal -->
+  <div class="modal" id="accountModal">
+    <div class="modal-content">
+      <h3>Accounts</h3>
+      <input type="text" id="accountNameInput" placeholder="Enter account name" />
+      <button id="addAccountBtn">Add Account</button>
+      <ul id="accountList"></ul>
+      <div class="modal-buttons">
+        <button id="closeAccountBtn">Close</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Recently Deleted Modal -->
+  <div class="modal" id="recentlyDeletedModal">
+    <div class="modal-content">
+      <h3>Recently Deleted Folders</h3>
+      <ul id="deletedList"></ul>
+      <div class="modal-buttons">
+        <button onclick="closeDeleted()">Close</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- List Order Modal -->
+  <div class="modal" id="listOrderModal">
+    <div class="modal-content">
+      <h3>Folders in Alphabetical Order</h3>
+      <ul id="orderedList"></ul>
+      <div class="modal-buttons">
+        <button onclick="closeOrdered()">Close</button>
+      </div>
+    </div>
+  </div>
+
+  <script src="script.js"></script>
+</body>
+</html>
