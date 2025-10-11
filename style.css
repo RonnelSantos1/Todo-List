@@ -1,0 +1,326 @@
+body {
+  font-family: 'Poppins', sans-serif;
+  margin: 0;
+  background: linear-gradient(135deg, #0f1f3d, #2b1055);
+  color: white;
+  text-align: center;
+}
+
+header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 15px 25px;
+  background: rgba(255,255,255,0.1);
+  position: relative;
+}
+
+.logo {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.logo img {
+  width: 40px;
+  height: 40px;
+  border-radius: 8px;
+}
+
+header input {
+  padding: 8px;
+  border-radius: 10px;
+  border: none;
+  outline: none;
+}
+
+/* My List Section */
+.my-lists {
+  margin-top: 30px;
+  background: rgba(255,255,255,0.1);
+  width: 80%;
+  margin-inline: auto;
+  padding: 20px;
+  border-radius: 15px;
+}
+
+#openFolderModal {
+  padding: 10px 15px;
+  border: none;
+  border-radius: 8px;
+  background: #00ff99;
+  cursor: pointer;
+  transition: 0.3s;
+}
+#openFolderModal:hover {
+  background: #00e589;
+}
+
+/* Folder Style */
+.folder-item {
+  background: rgba(255,255,255,0.15);
+  margin: 10px 0;
+  padding: 15px;
+  border-radius: 10px;
+  text-align: left;
+}
+.folder-item h3 {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+.folder-item button {
+  background: red;
+  color: white;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+}
+.folder-item ul {
+  list-style: none;
+  padding-left: 15px;
+}
+.folder-item li {
+  margin: 5px 0;
+}
+
+/* Hamburger Menu */
+.menu-btn {
+  font-size: 25px;
+  cursor: pointer;
+  padding: 8px 12px;
+  color: white;
+  background: #7b2ff7;
+  border-radius: 8px;
+  transition: 0.3s;
+}
+.menu-btn:hover { background: #a84cf7; }
+
+/* Sidebar */
+.sidebar {
+  position: fixed;
+  top: 0;
+  right: -260px;
+  width: 250px;
+  height: 100%;
+  background: linear-gradient(135deg, #2b1055, #7b2ff7);
+  padding-top: 60px;
+  transition: 0.4s ease-in-out;
+  z-index: 20;
+  border-top-left-radius: 12px;
+  border-bottom-left-radius: 12px;
+}
+.sidebar.active { right: 0; }
+.sidebar a {
+  display: block;
+  padding: 15px 25px;
+  color: white;
+  text-decoration: none;
+}
+.sidebar a:hover {
+  background: rgba(255,255,255,0.2);
+  border-radius: 6px;
+}
+
+/* Settings Panel */
+.settings-panel {
+  display: none;
+  background: rgba(255,255,255,0.15);
+  margin-left: 15px;
+  border-left: 2px solid white;
+  border-radius: 6px;
+}
+.settings-panel a {
+  font-size: 16px;
+  padding: 10px 25px;
+  display: block;
+}
+
+/* Overlay */
+.overlay {
+  display: none;
+  position: fixed;
+  width: 100%;
+  height: 100%;
+  top: 0; left: 0;
+  background: rgba(0,0,0,0.4);
+  z-index: 10;
+}
+.overlay.active { display: block; }
+
+/* Modal (Folder Creation) */
+/* ====== Folder Creation Modal Section ====== */
+.modal {
+  display: none;
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(10, 10, 30, 0.8);
+  backdrop-filter: blur(10px);
+  justify-content: center;
+  align-items: center;
+  z-index: 30;
+  animation: fadeIn 0.3s ease forwards;
+}
+
+@keyframes fadeIn {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+
+.modal-content {
+  width: 360px;
+  background: linear-gradient(145deg, rgba(43, 16, 85, 0.9), rgba(15, 31, 61, 0.95));
+  border: 1px solid rgba(255, 255, 255, 0.15);
+  border-radius: 20px;
+  box-shadow: 0 0 25px rgba(0, 255, 153, 0.3);
+  padding: 25px 30px;
+  text-align: left;
+  color: #fff;
+  animation: slideUp 0.35s ease;
+}
+
+@keyframes slideUp {
+  from {
+    transform: translateY(40px);
+    opacity: 0;
+  }
+  to {
+    transform: translateY(0);
+    opacity: 1;
+  }
+}
+
+.modal-content h3 {
+  text-align: center;
+  color: #00ffb7;
+  margin-bottom: 15px;
+  font-size: 1.4rem;
+  letter-spacing: 0.5px;
+}
+
+/* Folder Name Input */
+.modal-content input[type="text"] {
+  width: 100%;
+  padding: 10px 12px;
+  margin-bottom: 10px;
+  border: none;
+  border-radius: 10px;
+  outline: none;
+  background: rgba(255, 255, 255, 0.1);
+  color: white;
+  font-size: 0.95rem;
+  transition: 0.3s;
+}
+.modal-content input[type="text"]:focus {
+  background: rgba(255, 255, 255, 0.2);
+  box-shadow: 0 0 8px rgba(0, 255, 153, 0.3);
+}
+
+/* Add List Row */
+.todo-inputs {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin-bottom: 10px;
+}
+
+.todo-inputs input {
+  flex: 1;
+  padding: 8px;
+  border: none;
+  border-radius: 8px;
+  background: rgba(255, 255, 255, 0.1);
+  color: white;
+  outline: none;
+  transition: 0.3s;
+}
+.todo-inputs input:focus {
+  background: rgba(255, 255, 255, 0.2);
+}
+
+.todo-inputs button {
+  background: linear-gradient(135deg, #00ffb7, #00cc88);
+  border: none;
+  border-radius: 8px;
+  padding: 8px 10px;
+  color: #0f1f3d;
+  font-weight: 600;
+  cursor: pointer;
+  transition: 0.3s;
+}
+.todo-inputs button:hover {
+  transform: scale(1.05);
+}
+
+/* Todo List Items in Modal */
+#tempTodoList {
+  list-style: none;
+  padding: 0;
+  margin: 10px 0;
+  max-height: 120px;
+  overflow-y: auto;
+}
+#tempTodoList li {
+  background: rgba(255, 255, 255, 0.12);
+  border-radius: 6px;
+  padding: 8px 10px;
+  margin-bottom: 6px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  color: #e0e0e0;
+  font-size: 0.95rem;
+}
+
+#tempTodoList li span {
+  color: #00ffb7;
+  font-weight: 500;
+}
+
+#tempTodoList li button {
+  background: rgba(255, 80, 80, 0.8);
+  color: white;
+  border: none;
+  border-radius: 6px;
+  padding: 4px 8px;
+  cursor: pointer;
+  transition: 0.3s;
+}
+#tempTodoList li button:hover {
+  background: rgba(255, 50, 50, 1);
+}
+
+/* Modal Buttons */
+.modal-buttons {
+  text-align: right;
+  margin-top: 15px;
+}
+
+.modal-buttons button {
+  padding: 8px 14px;
+  margin-left: 8px;
+  border: none;
+  border-radius: 10px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: 0.3s;
+}
+
+#saveFolderBtn {
+  background: linear-gradient(135deg, #00ffb7, #00cc88);
+  color: #0f1f3d;
+}
+#saveFolderBtn:hover {
+  transform: scale(1.05);
+}
+
+#cancelFolderBtn {
+  background: rgba(255, 255, 255, 0.1);
+  color: white;
+}
+#cancelFolderBtn:hover {
+  background: rgba(255, 255, 255, 0.2);
+}
