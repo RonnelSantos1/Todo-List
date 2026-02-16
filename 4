@@ -1,0 +1,307 @@
+// script.js
+const powerBtn = document.getElementById("powerBtn");
+const robot = document.getElementById("robot");
+const themeBtns = document.querySelectorAll(".themeBtn");
+
+const oceanParticles = document.getElementById("ocean-particles");
+const oceanBgBubbles = document.getElementById("ocean-bg-bubbles");
+
+/* ✅ NEW: ripple overlay element */
+const screenRippleEl = document.getElementById("screen-ripple");
+
+let isOn = false;
+let isTransforming = false;
+
+powerBtn.addEventListener("click", () => {
+  isOn = !isOn;
+
+  if (isOn) {
+    robot.classList.remove("sleep");
+    robot.classList.add("awake");
+    document.body.style.backgroundColor = "#eee";
+    powerBtn.innerText = "Turn Off";
+  } else {
+    isTransforming = false;
+
+    robot.classList.remove("ocean","fire","nature","awake","transforming","shake","ocean-happy");
+    robot.classList.add("sleep");
+
+    // remove all ocean states
+    document.body.classList.remove("ocean-scene","ocean-charge");
+    document.body.style.backgroundColor = "#ccc";
+    powerBtn.innerText = "Turn On";
+  }
+});
+
+/* ===== ✅ FIXED Screen ripple impact (NO body transform) ===== */
+function screenRipple(){
+  if(!screenRippleEl) return;
+  screenRippleEl.classList.remove("active");
+  void screenRippleEl.offsetWidth; // restart animation
+  screenRippleEl.classList.add("active");
+  setTimeout(() => screenRippleEl.classList.remove("active"), 760);
+}
+
+/* =========================
+   BACKGROUND BUILDERS
+   (We build at reveal time so it "pops in" with explosion)
+   ========================= */
+function clearOceanParticles(){
+  if(oceanParticles) oceanParticles.innerHTML = "";
+}
+function createOceanParticles(count = 60){
+  if(!oceanParticles) return;
+  clearOceanParticles();
+
+  for(let i=0; i<count; i++){
+    const s = document.createElement("div");
+    s.classList.add("ocean-speck");
+
+    const x = Math.random() * window.innerWidth;
+    const y = Math.random() * window.innerHeight;
+
+    const scale = (0.6 + Math.random() * 1.4).toFixed(2);
+    const dx = (-60 + Math.random() * 120).toFixed(1) + "px";
+    const dur = (7 + Math.random() * 10).toFixed(2) + "s";
+
+    s.style.setProperty("--x", x.toFixed(1) + "px");
+    s.style.setProperty("--y", y.toFixed(1) + "px");
+    s.style.setProperty("--dx", dx);
+    s.style.setProperty("--s", scale);
+    s.style.setProperty("--dur", dur);
+
+    const size = 2 + Math.random() * 4;
+    s.style.width = size + "px";
+    s.style.height = size + "px";
+
+    s.style.animationDelay = (-Math.random() * 10).toFixed(2) + "s";
+    oceanParticles.appendChild(s);
+  }
+}
+
+function clearBgBubbles(){
+  if(oceanBgBubbles) oceanBgBubbles.innerHTML = "";
+}
+function createBgBubbles(count = 18){
+  if(!oceanBgBubbles) return;
+  clearBgBubbles();
+
+  for(let i=0; i<count; i++){
+    const b = document.createElement("div");
+    b.classList.add("bg-bubble");
+
+    const x = (-360 + Math.random() * 720).toFixed(1) + "px";
+    const dx = (-80 + Math.random() * 160).toFixed(1) + "px";
+    const s = (0.6 + Math.random() * 1.2).toFixed(2);
+    const dur = (9 + Math.random() * 12).toFixed(2) + "s";
+
+    b.style.setProperty("--x", x);
+    b.style.setProperty("--dx", dx);
+    b.style.setProperty("--s", s);
+    b.style.setProperty("--dur", dur);
+
+    const size = 10 + Math.random() * 26;
+    b.style.width = size + "px";
+    b.style.height = size + "px";
+
+    b.style.animationDelay = (-Math.random() * 12).toFixed(2) + "s";
+    b.style.opacity = (0.15 + Math.random() * 0.25).toFixed(2);
+    b.style.left = (Math.random() * 100).toFixed(2) + "%";
+
+    oceanBgBubbles.appendChild(b);
+  }
+}
+
+/* Rebuild on resize ONLY if ocean scene already revealed */
+window.addEventListener("resize", () => {
+  if(document.body.classList.contains("ocean-scene")){
+    createOceanParticles(60);
+    createBgBubbles(18);
+  }
+});
+
+/* =========================
+   OCEAN FX HELPERS (robot transform)
+   ========================= */
+function spawnCurrentSwirl(){
+  const cur = document.createElement("div");
+  cur.classList.add("ocean-current");
+  robot.appendChild(cur);
+  setTimeout(() => cur.remove(), 1900);
+}
+function spawnBubbles(count = 22){
+  for(let i=0; i<count; i++){
+    setTimeout(() => {
+      const b = document.createElement("div");
+      b.classList.add("ocean-bubble");
+      const bx = (Math.random() * 220 - 110);
+      const bs = (0.7 + Math.random() * 1.1).toFixed(2);
+      b.style.setProperty("--bx", bx.toFixed(1) + "px");
+      b.style.setProperty("--bs", bs);
+      const size = 6 + Math.random() * 10;
+      b.style.width = size + "px";
+      b.style.height = size + "px";
+      robot.appendChild(b);
+      setTimeout(() => b.remove(), 1300);
+    }, i * 60);
+  }
+}
+function spawnMist(count = 24){
+  for(let i=0; i<count; i++){
+    setTimeout(() => {
+      const m = document.createElement("div");
+      m.classList.add("ocean-mist");
+      const mx = (Math.random() * 260 - 130);
+      const my = (Math.random() * 260 - 130);
+      m.style.setProperty("--mx", mx.toFixed(1) + "px");
+      m.style.setProperty("--my", my.toFixed(1) + "px");
+      robot.appendChild(m);
+      setTimeout(() => m.remove(), 950);
+    }, i * 25);
+  }
+}
+function waveRing(){
+  const wave = document.createElement("div");
+  wave.classList.add("ocean-wave");
+  robot.appendChild(wave);
+  setTimeout(() => wave.remove(), 1200);
+}
+function splashRing(){
+  const r = document.createElement("div");
+  r.classList.add("ocean-splash-ring");
+  robot.appendChild(r);
+  setTimeout(() => r.remove(), 950);
+}
+function popFlash(){
+  const pop = document.createElement("div");
+  pop.classList.add("ocean-pop");
+  robot.appendChild(pop);
+  setTimeout(() => pop.remove(), 600);
+}
+function spawnAbsorbParticles(count = 56){
+  for(let i=0; i<count; i++){
+    setTimeout(() => {
+      const p = document.createElement("div");
+      p.classList.add("water-stream");
+      const randX = (Math.random() * 280 - 140);
+      const randY = (Math.random() * 280 - 140);
+      p.style.setProperty("--startX", randX.toFixed(1) + "px");
+      p.style.setProperty("--startY", randY.toFixed(1) + "px");
+      const s = 7 + Math.random() * 10;
+      p.style.width = s + "px";
+      p.style.height = s + "px";
+      robot.appendChild(p);
+      setTimeout(() => p.remove(), 1250);
+    }, i * 5); // fast spawn
+  }
+}
+function dropletExplosion(count = 58){
+  for(let i=0; i<count; i++){
+    const d = document.createElement("div");
+    d.classList.add("water-droplet");
+    const angle = Math.random() * Math.PI * 2;
+    const distance = 70 + Math.random() * 110;
+    const dx = Math.cos(angle) * distance;
+    const upward = -70 - Math.random() * 80;
+    const dy = (Math.sin(angle) * (distance * 0.35)) + upward;
+    d.style.setProperty("--dx", dx.toFixed(1) + "px");
+    d.style.setProperty("--dy", dy.toFixed(1) + "px");
+    const size = 6 + Math.random() * 9;
+    d.style.width = size + "px";
+    d.style.height = size + "px";
+    robot.appendChild(d);
+    setTimeout(() => d.remove(), 950);
+  }
+}
+function spawnDrips(){
+  for(let i=0; i<6; i++){
+    setTimeout(() => {
+      const drip = document.createElement("div");
+      drip.classList.add("water-drip");
+      drip.style.left = (15 + Math.random() * 110) + "px";
+      robot.appendChild(drip);
+      setTimeout(() => drip.remove(), 1600);
+    }, i * 140);
+  }
+}
+
+/* ===== Ocean transform (Background reveals at explosion!) ===== */
+function oceanTransform(){
+  if(isTransforming) return;
+  isTransforming = true;
+
+  // Start from normal background (no ocean scene yet)
+  document.body.classList.remove("ocean-scene");
+  document.body.classList.add("ocean-charge");
+
+  robot.classList.remove("fire","nature","ocean","ocean-happy");
+  robot.classList.add("transforming");
+
+  // Charging FX (around robot only)
+  spawnCurrentSwirl();
+  spawnBubbles(22);
+  spawnMist(24);
+  spawnAbsorbParticles(56);
+
+  setTimeout(() => {
+    waveRing();
+    splashRing();
+  }, 760);
+
+  // Explosion moment
+  setTimeout(() => {
+    popFlash();
+    screenRipple(); // ✅ overlay ripple (no cut)
+
+    robot.classList.add("shake");
+    setTimeout(() => robot.classList.remove("shake"), 380);
+
+    spawnMist(16);
+    dropletExplosion(58);
+
+    // ✅ Reveal BOTH background + ocean bot at the same time
+    setTimeout(() => {
+      document.body.classList.remove("ocean-charge");
+      document.body.classList.add("ocean-scene");
+
+      // Build background particles/bubbles only at reveal time
+      createOceanParticles(60);
+      createBgBubbles(18);
+
+      robot.classList.add("ocean");
+      robot.classList.add("ocean-happy");
+
+      robot.classList.remove("transforming");
+      isTransforming = false;
+
+      spawnDrips();
+    }, 120);
+  }, 1220);
+}
+
+/* ===== Theme buttons ===== */
+themeBtns.forEach(btn => {
+  btn.addEventListener("click", () => {
+    if(!isOn || isTransforming) return;
+
+    const color = btn.getAttribute("data-color");
+
+    // leaving ocean mode
+    if(color !== "blue"){
+      document.body.classList.remove("ocean-scene","ocean-charge");
+      robot.classList.remove("ocean-happy");
+    }
+
+    robot.classList.remove("ocean","fire","nature");
+
+    if(color === "blue"){
+      oceanTransform();
+    } else if(color === "red"){
+      robot.classList.add("fire");
+      document.body.style.backgroundColor = "#f28c8c";
+    } else if(color === "green"){
+      robot.classList.add("nature");
+      document.body.style.backgroundColor = "#a8e6a1";
+    }
+  });
+});
