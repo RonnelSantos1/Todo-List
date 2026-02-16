@@ -1,0 +1,66 @@
+<!-- index.html -->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Cute Robot</title>
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+
+  <!-- Ocean scene layers (background) -->
+  <div id="ocean-bg"></div>
+  <div id="ocean-waves"></div>
+  <div id="ocean-caustics"></div>
+  <div id="underwater-distortion"></div>
+  <div id="ocean-rays"></div>
+
+  <!-- Ocean extras -->
+  <div id="ocean-surface"></div>
+  <div id="ocean-bg-bubbles"></div>
+  <div id="ocean-particles"></div>
+
+  <!-- ✅ NEW: overlay ripple (fixes the background cut) -->
+  <div id="screen-ripple"></div>
+
+  <div id="robot-container">
+    <div id="robot" class="sleep">
+      <div class="head">
+
+        <!-- Aquatic/Ocean bot hardware layers (only visible when #robot has .ocean) -->
+        <div class="ocean-aura"></div>
+        <div class="tank-glass"></div>
+        <div class="tank-waterline"></div>
+        <div class="tank-bubbles"></div>
+        <div class="core"></div>
+        <div class="fin left"></div>
+        <div class="fin right"></div>
+        <div class="hud-lines"></div>
+
+        <div class="eyes">
+          <div class="eye left">
+            <div class="pupil"></div>
+            <div class="shine"></div>
+          </div>
+          <div class="eye right">
+            <div class="pupil"></div>
+            <div class="shine"></div>
+          </div>
+        </div>
+
+        <div class="mouth"></div>
+      </div>
+    </div>
+  </div>
+
+  <div id="controls">
+    <button id="powerBtn">Turn On</button>
+    <button class="themeBtn" data-color="blue">Blue</button>
+    <button class="themeBtn" data-color="red">Red</button>
+    <button class="themeBtn" data-color="green">Green</button>
+  </div>
+
+  <script src="script.js"></script>
+</body>
+</html>
